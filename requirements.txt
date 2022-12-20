@@ -2,6 +2,7 @@ flask-smorest
 python-dotenv
 Flask-SQLAlchemy
 Flask-JWT-Extended
+Flask-Migrate
 passlib
 marshmallow
 gunicorn
