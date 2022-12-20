@@ -93,9 +93,9 @@ def create_app(db_url=None):
             401,
         )
 
-    # with app.app_context():
-        # import models
-        # db.create_all()
+    with app.app_context():
+        import models
+        db.create_all()
 
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(StoreBlueprint)
