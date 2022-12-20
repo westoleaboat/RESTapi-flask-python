@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from blocklist import BLOCKLIST
 from db import db
 import os
+import models
 
 
 from resources.item import blp as ItemBlueprint
@@ -93,9 +94,8 @@ def create_app(db_url=None):
             401,
         )
 
-    with app.app_context():
-        import models
-        db.create_all()
+    # with app.app_context():
+    #     db.create_all()
 
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(StoreBlueprint)
