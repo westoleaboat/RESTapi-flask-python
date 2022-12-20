@@ -1,4 +1,5 @@
 flask-smorest
+flask
 python-dotenv
 Flask-SQLAlchemy
 Flask-JWT-Extended
