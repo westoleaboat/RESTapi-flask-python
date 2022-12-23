@@ -7,3 +7,4 @@ Flask-Migrate
 passlib
 marshmallow
 gunicorn
+psycopg2
