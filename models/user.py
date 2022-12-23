@@ -1,5 +1,5 @@
 from db import db
-import app
+# import app
 
 
 class UserModel(db.Model):
@@ -31,5 +31,5 @@ class UserModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    with app.app_context():
-        db.create_all()
+    # with app.app_context():
+    #     db.create_all()
