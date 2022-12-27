@@ -5,6 +5,9 @@ from passlib.hash import pbkdf2_sha256
 import requests
 import os
 from sqlalchemy import or_
+import redis
+from rq import Queue
+from tasks import send_user_registration_email
 
 from db import db
 from models import UserModel
@@ -13,16 +16,9 @@ from blocklist import BLOCKLIST
 
 blp = Blueprint("Users", "users", description="Operations on users")
 
-def send_simple_message(to, subject, body):
-    domain = os.getenv("MAILGUN_DOMAIN")
+connection = redis.from_url(os.getenv("REDIS_URL"))
+queue = Queue("emails", connection=connection)
 
-    return requests.post(
-		f"https://api.mailgun.net/v3/{domain}/messages",
-		auth=("api", os.getenv("MAILGUN_API_KEY")),
-		data={"from": f"chacotasprod <mailgun@{domain}>",
-			"to": [to],
-			"subject": subject,
-			"text": body})
 
 @blp.route("/logout")
 class UserLogout(MethodView):
@@ -52,11 +48,9 @@ class UserRegister(MethodView):
         db.session.add(user)
         db.session.commit()
 
-        send_simple_message(
-            to=user.email,
-            subject='Successfully signed up',
-            body=f"Hi, {user.username}! You have successfully signed up to the Stores REST API"
-        )
+        
+        queue.enqueue(send_user_registration_email, user.email, user.username)
+
 
         return {"message": "User created successfully."}, 201
 

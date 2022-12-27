@@ -9,3 +9,4 @@ marshmallow
 gunicorn
 psycopg2
 requests
+rq
